@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+<body>
+<div class="container-fluid">
+    <header>
+        <th:block th:include="~{fragments/nav}"></th:block>
+    </header>
+    <main class="mt-5">
+        <div class="bg-image-quote-all">
+            <span style="visibility: hidden">....</span>
+            <h1 class="text-center bold font-weight-bold text-dark">All users</h1>
+            <hr class="hr-2 bg-dark">
+            <table class="table table-hover w-75 mx-auto">
+                <thead>
+                <tr class="row mx-auto">
+                    <th class="col-md-1 bold text-center text-white">#</th>
+                    <th class="col-md-3 bold text-center text-white">Username</th>
+                    <th class="col-md-2 bold text-center text-white">Email</th>
+                    <th class="col-md-2 bold text-center text-white">Roles</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="users, iter : ${users}">
+                    <tr class="row mx-auto">
+                        <th class="col-md-1 bold text-center text-white" th:utext="${iter.index + 1}"></th>
+                        <td class="col-md-3 bold text-center text-white" th:utext="${users.username}"></td>
+                        <td class="col-md-2 bold text-center text-white" th:utext="${users.email}"></td>
+                        <th:block th:each="authorities : ${users.authorities}">
+                            <td class="col-md-2 bold text-center text-white"
+                                th:utext="${authorities.authority}">
+                            </td>
+                        </th:block>
+                        <th:block sec:authorize="hasAuthority('ADMIN')">
+                            <td class=" bold text-center text-white">
+                                <form th:action="@{/users/delete/{id}(id=${users.id})}">
+                                    <button class="btn btn-dark btn-width text-white">Delete User</button>
+                                </form>
+                            </td>
+                        </th:block>
+
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <hr class="hr-2 bg-dark">
+            <span style="visibility: hidden">....</span>
+        </div>
+    </main>
+    <footer>
+        <th:block th:include="~{fragments/footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>
